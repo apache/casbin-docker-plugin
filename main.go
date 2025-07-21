@@ -30,7 +30,7 @@ const (
 )
 
 var (
-	casbinModel = flag.String("model", "examples/basic_model.conf", "Specifies the Casbin model file")
+	casbinModel  = flag.String("model", "examples/basic_model.conf", "Specifies the Casbin model file")
 	casbinPolicy = flag.String("policy", "examples/basic_policy.csv", "Specifies the Casbin policy file")
 )
 

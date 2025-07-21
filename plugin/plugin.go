@@ -46,12 +46,19 @@ func (plugin *CasbinAuthZPlugin) AuthZReq(req authorization.Request) authorizati
 	reqURI, _ := url.QueryUnescape(req.RequestURI)
 	reqURL, _ := url.ParseRequestURI(reqURI)
 
+	// Check if URL parsing failed
+	if reqURL == nil {
+		log.Println("Failed to parse request URI:", reqURI)
+		return authorization.Response{Allow: false, Msg: "Invalid request URI"}
+	}
+
 	obj := reqURL.String()
 	act := req.RequestMethod
 
 	allowed, err := plugin.enforcer.Enforce(obj, act)
 	if err != nil {
-		panic(err)
+		log.Println("Enforce error:", err)
+		return authorization.Response{Allow: false, Msg: "Authorization error: " + err.Error()}
 	}
 
 	if allowed {
